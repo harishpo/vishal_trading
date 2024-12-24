@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="form-container">
+  <form action="{{ url_for('billing') }}" method="post">
+    <div class="labels-div">
+      <label for="select">Select Tin:</label><br><br>
+      <label for="quantity">Quantity:</label><br><br>
+      <label for="price">Price:</label><br><br>
+    </div>
+
+    <div class="inputs-div">
+      <select id="select" name="tins" style="width: 100%; height: 38px;">
+        <option value="RICH PALM GOLD 15 KG TIN">RICH PALM GOLD 15 KG TIN</option>
+        <option value="RICH PALM GOLD 15 LTR TIN">RICH PALM GOLD 15 LTR TIN</option>
+        <option value="RICH PALM GOLD 13 KG TIN">RICH PALM GOLD 13 KG TIN</option>
+        <option value="HEALTHY GOLD 15 KG TIN">HEALTHY GOLD 15 KG TIN</option>
+        <option value="HEALTHY GOLD 15 LTR TIN">HEALTHY GOLD 15 LTR TIN</option>
+      </select>
+<!--      <input type="text" name="tin" id="tin" style="width: 18%;">-->
+      <input type="number" name="quantity" id="quantity" >
+      <input type="number" name="price" id="price" ><br>
+<!--      <input type="number" name="total" id="total" >-->
+      <button type="submit" class="btn btn-primary btn-block btn-large" name="action" value="add_goods"
+              style="width: 40%; float: right;">Add</button>
+    </div>
+      <div class="gst-labels-div">
+        <label  style="padding-right: 10px; padding-left: 40px;">Customer Name:</label>
+        <input type="text" name="cust_name" value="{{ customer_data['customer_name'] }}" id="cust_name" style="width: 35%;">
+        <select id="customer" name="customer_name" >
+          <option value="">Select Customer Name</option>
+          {% for name in names: %}
+          <option value="{{ name }}">{{ name }}</option>
+          {% endfor %}
+        </select>
+        <label >Invoice No:</label>
+        <input type="text" name="invoice_no" id="invoice_no" value="{{ customer_data['invoice_no'] }}" style="width: 40px; float: right;">
+        <label style="padding-right: 52px; padding-left: 40px; text-align: right;">GSTIN/UIN:</label>
+        <input type="text" id="gst" name="gstin" value="{{ customer_data['cust_gst'] }}" style="width: 305px">
+        <button type="submit" class="btn btn-primary btn-block btn-large" name="action" value="add_customer"
+              style="width: 18%; float: right; margin-right: 220px">New Customer</button>
+
+        <label style="padding-right: 45px; padding-left: 40px; text-align: right;">EwayBill No:</label>
+        <input type="text" name="eway_bill" value="{{ customer_data['eway_bill'] }}" style="width: 305px">
+      </div>
+
+      {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+  </form>
+
+  <script>
+        $(document).ready(function() {
+            $('#customer').change(function() {
+                const selectedName = $(this).val();
+                if (selectedName) {
+                    // Make an AJAX request to fetch the GST value
+                    $.ajax({
+                        url: '/get_gst',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ customer_name: selectedName }),
+                        success: function(response) {
+                            // Update the GST input field
+                            $('#gst').val(response.gst);
+                            $('#cust_name').val(selectedName);
+                        },
+                        error: function() {
+                            alert('Error fetching GST data.');
+                        }
+                    });
+                } else {
+                    // Clear the GST field if no company is selected
+                    $('#gst').val('');
+                }
+            });
+        });
+      </script>
+
+</div>
+
+
+
+
+
+<div class="hide-labels-div {% if not show_second_form %}hidden{% endif %}">
+  <form action="{{ url_for('preview') }}" method="post">
+  <label class="bill-label-class" >SL NO</label>
+  <label class="bill-label-class" style="width: 20%;">Description of goods</label>
+  <label class="bill-label-class">Quantity</label>
+  <label class="bill-label-class">Rate</label>
+  <label class="bill-label-class">Amount</label>
+  <label class="bill-label-class">SGST</label>
+  <label class="bill-label-class">CGST</label>
+  <label class="bill-label-class">Total AMount</label>
+  {% for dict in dicts: %}
+  <label class="bill-label-class" > {{dicts.index(dict)+1}} </label>
+  <input class="bill-label-class" style="width: 20%;" type="text" name="description" value="{{ dict['description']}}">
+  <input class="bill-label-class" type="text" name="quantity" value="{{ dict['quantity']}}">
+  <input class="bill-label-class" type="text" name="rate" value="{{ dict['price']}}">
+  <input class="bill-label-class" type="text" name="amount" value="{{ dict['amount']}}">
+  <input class="bill-label-class" type="text" name="sgst" value="{{ dict['sgst']}}">
+  <input class="bill-label-class" type="text" name="cgst" value="{{ dict['cgst']}}">
+  <input class="bill-label-class" type="text" name="total_amt" value="{{ dict['total']}}">
+  <a href="{{url_for('delete_entry', idx=dicts.index(dict))}}" > ✘ </a>
+    {% endfor %}
+  <button type="submit" class="btn btn-primary btn-block btn-large" style="width: 10%; float: right;">Preview</button>
+  </form>
+</div>
+
+
+
+
+
+
+
+{% endblock %}

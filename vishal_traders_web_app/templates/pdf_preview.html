@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Vishal Traders</title>
+
+  <style>
+    .header{
+        width: 99%;
+        background-color: white;
+        border: 2px solid rgb(160, 156, 156);
+        padding-left: 10px;
+    }
+    .head-details, .image, .bank, .bank_label, .bank_details {
+        display: inline-block;
+        vertical-align: top;
+    }
+    .head-details{
+        width: 40%;
+    }
+    .image{
+        margin-top: 20px;
+        width: 25%;
+        float: right;
+        padding-right: 5px;
+        font-family: Georgia, serif;
+    }
+    .sub-head, .fssi, .dates{
+        display: inline-block;
+        vertical-align: top;
+    }
+    table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+.a4-page {
+            width: 210mm;
+            height: 297mm;
+            padding: 10mm;
+            margin: auto;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            overflow: hidden;
+        }
+        .a4-page {
+                transform: scale(0.75); /* Adjust scale to fit your screen */
+                transform-origin: top left;
+            }
+            /* For print: ensure page fits perfectly for A4 print */
+        @media print {
+            .a4-page {
+                width: 210mm;
+                height: 297mm;
+                margin: 0;
+                padding: 10mm;
+                box-shadow: none;
+                page-break-after: always;
+            }
+            /* Avoid any screen-only transformations for print */
+            .a4-page {
+                transform: none;
+            }
+        }
+
+        /* Floating buttons container */
+        .floating-buttons {
+            position: fixed; /* Fixed to the viewport */
+            bottom: 20px; /* Distance from the bottom of the viewport */
+            right: 20px; /* Distance from the right side of the viewport */
+            display: flex; /* Align buttons side by side */
+            gap: 10px; /* Space between the buttons */
+        }
+
+        /* Individual button styling */
+        .floating-button {
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-size: 16px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            cursor: pointer;
+        }
+
+        .floating-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+
+  </style>
+</head>
+
+<body>
+
+    <div class="a4-page">
+        <div class="container">
+            <div class="header">
+                <div class="head-details">
+                    <p>Plot No, 226, KIAD, Industrial Area,</p>
+                    <p>Kapnoor 2nd Phase, Kalaburgi - 585104</p>
+                    <p>GSTIN: 123456789012345567134565</p>
+                </div>
+                <div class="image">
+<!--                    <img src="/static/images/latest1.png" style="float: right; width: 95%;">-->
+                    <label style="font-size: xx-large; color: red; font-family: Georgia, serif;">Vishal Trading Company</label>
+                </div>
+            </div>
+            <div style="width: 99%;">
+                <p style="text-align: center; background-color: yellow;">Tax Invoice</p>
+            </div>
+            <div class="fssi" style="width: 99%;">
+                <div class="sub-head">
+                    <label style="width: 10%;">FSSI NO: </label>
+                    <label style="width: 10%;">11223316000005</label>
+                </div>
+                <div class="dates" style="float: right;">
+                    <label> Date: </label>
+                    <label> {{date}} </label>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div style="padding-top: 30px;">
+                <label class="invoive_lbl" style="padding-right: 10px;">eWay Bill No:</label>
+                <label>{{ data['eway_bill'] }}</label>
+            </div>
+            <div>
+                <label style="padding-right: 25px;">Invoice No:</label>
+                <label>{{ data['invoice_no'] }}</label>
+            </div>
+            <div>
+                <label style="padding-right: 50px;">Ref No:</label>
+                <label>1234567890</label>
+            </div>
+        </div>
+        <div style="padding-top: 25px;">
+            <a>CUSTOMER NAME:</a>
+            <label>{{ data['customer_name'] }}</label>
+        </div>
+        <div style="padding-top: 5px;">
+            <a>GSTIN/UIN:</a>
+            <label>{{ data['cust_gst'] }}</label>
+        </div>
+        <div style="padding-top: 40px;">
+            <table style="width: 99%; margin:0 auto; height: 100px;">
+                <tr>
+                    <th style="width: 5%;">S No.</th>
+                    <th style="width: 23%;">Description of Goods</th>
+                    <th style="width: 9%;">Quantity</th>
+                    <th style="width: 8%;">Rate</th>
+                    <th style="width: 9%;">Amount</th>
+                    <th style="width: 8%;">SGST</th>
+                    <th style="width: 8%;">CGST</th>
+                    <th style="width: 10%;">Total Amount</th>
+                </tr>
+                {% for data in bill_details %}
+                <tr style="text-align: center;">
+                    <td>{{ bill_details.index(data)+1 }}</td>
+                    <td>{{ data['description'] }}</td>
+                    <td>{{ data['quantity'] }}</td>
+                    <td>{{ data['price'] }}</td>
+                    <td>{{ data['amount'] }}</td>
+                    <td>{{ data['sgst'] }}</td>
+                    <td>{{ data['cgst'] }}</td>
+                    <td>{{ data['total'] }}</td>
+                  {% endfor %}
+                </tr>
+            </table>
+            <table style="width: 99%; margin:0 auto;">
+                <tr>
+                    <th style="width: 28%; text-align: center;">Total</th>
+                    <th style="width: 9%;">{{ totals['total_quantity'] }}</th>
+                    <th style="width: 8%;"></th>
+                    <th style="width: 9%;">{{ totals['total_amount'] }}</th>
+                    <th style="width: 8%;">{{ totals['total_sgst'] }}</th>
+                    <th style="width: 8%;">{{ totals['total_sgst'] }}</th>
+                    <th style="width: 10%;">{{ totals['overall_amount'] }}</th>
+                </tr>
+            </table>
+            <div style="padding-top: 25px;">
+                <a style="font-weight: bolder;">AMOUNT IN WORDS:</a>
+                <label>{{ amt_in_words }}</label>
+            </div>
+        </div>
+
+        <div class="bank">
+            <p style="padding-top: 25px; font-weight: bold;"> All Payments Should be made by A/C payee Cheques, DD or RTGS. In Favour of Company:</p>
+            <p style="font-weight: bold; margin: 0%;">Company Bank Details:</p>
+            <div class="bank_label" style="text-align: right; padding-right: 10px;">
+                <p>Bank Name:</p>
+                <p>A/C No:</p>
+                <p>IFSC Code:</p>
+                <p>Branch:</p>
+            </div>
+            <div class="bank_details" >
+                <p>State Bank of India</p>
+                <p>40104334063</p>
+                <p>SBIN0020223</p>
+                <p>Super Market Branch</p>
+            </div>
+        </div>
+        <p style="padding-top: 150px;">Declaration: We declare that this invoice shows the actual price of the goods described and that all perticulars are true and correct</p>
+        <footer>
+            <hr>
+        </footer>
+        <label>Authorised Signatory</label>
+        <label style="float: right;">Customer's Signature</label>
+    </div>
+    <!-- Floating Anchor Button -->
+
+    <div class="floating-buttons">
+        {% if preview == "show" %}
+        <a href="{{ url_for('save_entry') }}" class="floating-button">Save</a>
+        {% endif %}
+        <a href="{{ url_for('secrets') }}" class="floating-button">Back</a>
+    </div>
+
+
+
+</body>
+</html>

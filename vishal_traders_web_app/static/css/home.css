@@ -1,0 +1,152 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.sidebar {
+  position: fixed;
+  height: 100%;
+  overflow-y: auto;
+  top: 0;
+}
+
+.content {
+  margin-left: 320px; /* Sidebar width + some padding */
+  padding: 20px;
+  height: 500px;
+  background-color: aliceblue;
+}
+
+
+.mb-6 {
+    margin-bottom: 1.5rem !important;
+}
+.card {
+    margin-left: 400px;
+    margin-right: 120px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    max-height: 400px;
+    overflow-y: auto;
+}
+.table{
+  text-align: center;
+}
+
+
+
+.container {
+            margin-top: 10px;
+            margin-left: 300px;
+            max-width: 1200px;
+            display: flex;
+            flex-wrap: wrap; /* Allows divs to wrap to the next line */
+            gap: 10px; /* Adds 20px gap between divs */
+            justify-content: space-between; /* Ensures even spacing */
+        }
+
+        /* Individual div styling */
+        .box {
+            flex: 1 1 calc(25% - 20px); /* 25% width minus the gap */
+            box-sizing: border-box; /* Include padding and border in size */
+            background-color: #f2f7f8;
+            border-radius: 15px;
+            height: 150px; /* Fixed height for demo */
+            font-size: 15px;
+        }
+
+        p{
+            margin-left: 10px;
+        }
+
+        /* Responsive breakpoints */
+        @media (max-width: 768px) {
+            .box {
+                flex: 1 1 calc(50% - 20px); /* 50% width on smaller screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .box {
+                flex: 1 1 100%; /* Full width on very small screens */
+            }
+        }
+
+
+        .search-box {
+          margin-left: 1090px;
+    margin-top: 5px;
+    text-align: center;
+      background-color: #f2f7f8;
+      height: 90px; /* Fixed height */
+      width: 400px;
+	  border-radius: 4px;
+      padding: 10px;
+
+}
+
+.search-item {
+            height: 100px;
+            margin-top: 10px;
+            margin-left: 310px;
+            margin-bottom: 10px;
+            max-width: 1180px;
+            display: flex;
+            background: #f0f0f0;
+            text-align: center;
+            border-style: ridge;
+}
+
+
+
+
+
+.report-search, .report-display, .purchased_cust_list, .missed_cust_list{
+  display: inline-block;
+  vertical-align: top;
+}
+
+
+
+.report-search-box {
+    margin-top: 5px;
+    margin-left: 10px;
+    text-align: center;
+    background: #90AFC5;
+      height: 100px; /* Fixed height */
+      width: 450px;
+      border: 1px solid rgba(0,0,0,0.3);
+	  border-radius: 4px;
+      padding: 10px;
+      box-shadow: inset 0 -5px 45px rgba(100,100,100,0.2), 0 1px 1px rgba(255,255,255,0.2);
+}
+
+.report-display{
+    margin-top: 10px;
+    margin-left: 5px;
+    overflow-y: auto; /* Add vertical scroll */
+    overflow-x: auto; /* Add vertical scroll */
+    background: #f0f0f0;
+    border-style: ridge;
+    border-radius: 5px;
+      height: 300px; /* Fixed height */
+      width: 1090px;
+      padding: 10px;
+      overflow-y: auto; /* Add vertical scroll */
+      overflow-x: auto; /* Hide horizontal scroll */
+}
+
+.chart {
+position: fixed;
+    right: 0;
+    margin-top: 10px;
+    width: 400px;
+    background-color: #f0f0f0;
+    /*border-left: 1px solid #ccc; /* Optional: left border */
+    border: 2px solid black;
+    padding: 10px;
+    box-shadow: -4px 0 6px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;   /* Add scroll inside the div if content overflows */
+}
+

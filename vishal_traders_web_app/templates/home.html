@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vishal Traders</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/home.css')}}"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <!--Side Bar code-->
+      <div class="sidebar d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px;">
+<!--        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">-->
+<!--&lt;!&ndash;          <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>&ndash;&gt;-->
+<!--            <svg class="bi me-2" width="20" height="40" role="img" ><img class="mb-1"-->
+<!--                    src="/static/images/vishal_taders.png" alt="" width="50" height="35"></svg>-->
+<!--          <span class="fs-4">Vishal Traders</span>-->
+<!--        </a>-->
+          <label style="color: red; margin-left: 30px; font-family: Georgia, serif; font-size: large;">Vishal Trading Company</label>
+        <ul class="nav nav-pills flex-column mb-auto">
+          <li class="nav-item">
+            <a href="{{ url_for('secrets') }}" class="nav-link active" aria-current="page">
+
+              <svg class="bi pe-none me-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/>
+              </svg>
+              Home
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('billing') }}" class="nav-link text-white">
+              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+              New Invoice
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('report') }}" class="nav-link text-white">
+              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+              Report
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('products') }}" class="nav-link text-white">
+              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+              Products
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link text-white">
+              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+              Customers
+            </a>
+          </li>
+        </ul>
+        <hr>
+        <a href="{{ url_for('logout') }}" class="nav-link text-white">
+              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+              Log Out
+            </a>
+      </div>
+<!--Sidebar code ends-->
+
+<div class="search-box">
+  <form action="{{ url_for('search') }}" method="POST">
+    <input type="text" id="search" name="search" value="" style="width: 305px; height: 40px;">
+    <button type="submit" class="btn btn-primary btn-block btn-large" name="search" value="search"
+         style="width: 50px;  float: right; " ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+</svg></button>
+    <p >Search Name/Invoice No/Date(dd/mm/yyyy)</p>
+  </form>
+</div>
+
+<hr style="margin-left: 320px;">
+<div class="container">
+  <div class="box">
+      <p>Today's Opening Stock : {{stock.oil['today_opening_stock']}}KG</p>
+      <p>Current Stock : {{stock.oil['RPG']}}KG</p>
+      <p>Available Tins: {{stock.tins_in_stock}}</p>
+  </div>
+  <div class="box">
+      <p>Total Tins sold : {{daily_tins_count['total_tins']}}</p>
+      <p>15KG TINS : {{daily_tins_count['15KG']}}</p>
+      <p>15LTR TINS : {{daily_tins_count['15LTR']}}</p>
+      <p>Other TINs : {{daily_tins_count['other']}}</p>
+  </div>
+  <div class="box">
+      <h5 style="text-align: center">Today's Price</h5>
+      <label style="margin-left: 10px;">KG TINS :</label>
+      <input style="width: 100px; border: none; background-color: #f2f7f8;"><br>
+      <label style="margin-left: 10px;">LTR TINS :</label>
+      <input style="width: 100px; border: none; background-color: #f2f7f8;"><br>
+      <label style="margin-left: 10px;">Loose Oil :</label>
+      <input style="width: 100px; border: none; background-color: #f2f7f8;">
+  </div>
+  <div class="box">
+
+  </div>
+</div>
+
+
+
+<!-- Pending invoice card -->
+<div class="card mb-6 mb-xxl-0">
+  <div class="card-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="fs-6 mb-0">Payment Pending</h3>
+      </div>
+      <div class="col-auto my-n3 me-n3">
+      </div>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-flush align-middle mb-0">
+      <thead>
+        <tr><th class="fs-sm">Customer Name</th>
+        <th class="fs-sm">Status</th>
+        <th class="fs-sm">Total Amount</th>
+        <th class="fs-sm">Date</th>
+      </tr></thead>
+      <tbody>
+      {% for invoice in invoices: %}
+        <tr>
+          <td>
+            <div class="d-flex align-items-center">
+              <a href="{{ url_for('invoice_details', invoice_no=invoice.invoice_no) }}">{{ invoice.invoice_no }}</a>
+              <div class="ms-4">
+                <div>{{ invoice.customer_details['customer_name'] }}</div>
+
+              </div>
+            </div>
+          </td>
+          <td>
+                <span class="badge bg-danger-subtle text-danger">{{ invoice.total_amount['status'] }}</span>
+          </td>
+          <td>
+            <label>{{ invoice.total_amount['overall_amount'] }}</label>
+          </td>
+          <td>
+            {{ invoice.date }}
+          </td>
+          <td>
+            <a href="{{ url_for('update_invoice', invoice_no=invoice.invoice_no, edit='clear') }}">
+          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0 0 48 48">
+            <linearGradient id="TpFkpHq7AGWb~Tkla4kyga_YDFV6MVN9cNl_gr1" x1="24" x2="24" y1="6.121" y2="42.039" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9dffce"></stop><stop offset="1" stop-color="#50d18d"></stop></linearGradient><path fill="url(#TpFkpHq7AGWb~Tkla4kyga_YDFV6MVN9cNl_gr1)" d="M40,42H8c-1.1,0-2-0.9-2-2V8c0-1.1,0.9-2,2-2h32c1.1,0,2,0.9,2,2v32C42,41.1,41.1,42,40,42z"></path><linearGradient id="TpFkpHq7AGWb~Tkla4kygb_YDFV6MVN9cNl_gr2" x1="13" x2="36" y1="24.793" y2="24.793" gradientUnits="userSpaceOnUse"><stop offset=".824" stop-color="#135d36"></stop><stop offset=".931" stop-color="#125933"></stop><stop offset="1" stop-color="#11522f"></stop></linearGradient><path fill="url(#TpFkpHq7AGWb~Tkla4kygb_YDFV6MVN9cNl_gr2)" d="M21.293,32.707l-8-8c-0.391-0.391-0.391-1.024,0-1.414l1.414-1.414	c0.391-0.391,1.024-0.391,1.414,0L22,27.758l10.879-10.879c0.391-0.391,1.024-0.391,1.414,0l1.414,1.414	c0.391,0.391,0.391,1.024,0,1.414l-13,13C22.317,33.098,21.683,33.098,21.293,32.707z"></path>
+          </svg>
+        </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Pending invoice card end -->
+
+
+
+
+
+{% if search == "yes" %}
+<div class="card mb-6 mb-xxl-0">
+  <div class="card-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="fs-6 mb-0">Search Items</h3>
+      </div>
+      <div class="col-auto my-n3 me-n3">
+      </div>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-flush align-middle mb-0">
+      <thead>
+        <tr><th class="fs-sm">Customer Name</th>
+        <th class="fs-sm">Status</th>
+        <th class="fs-sm">Total Amount</th>
+        <th class="fs-sm">Date</th>
+      </tr></thead>
+      <tbody>
+      {% for invoice in invoices_list: %}
+        <tr>
+          <td>
+            <div class="d-flex align-items-center">
+              <a href="{{ url_for('invoice_details', invoice_no=invoice.invoice_no) }}">{{ invoice.invoice_no }}</a>
+              <div class="ms-4">
+                <div>{{ invoice.customer_details['customer_name'] }}</div>
+
+              </div>
+            </div>
+          </td>
+          <td>
+            {% if invoice.total_amount['status']  == 'pending' %}
+                <span class="badge bg-danger-subtle text-danger">{{ invoice.total_amount['status'] }}</span>
+            {% else %}
+                <span class="badge bg-success-subtle text-success">{{ invoice.total_amount['status'] }}</span>
+            {% endif %}
+          </td>
+          <td>
+            <label>{{ invoice.total_amount['overall_amount'] }}</label>
+          </td>
+          <td>
+            {{ invoice.date }}
+          </td>
+          <td>
+            <a href="{{ url_for('update_invoice', invoice_no=invoice.invoice_no, edit='detail') }}" ><img style="width: 20px; height: 20px;" src="/static/images/icons8-edit-property-50.png"></a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+    <div >
+        <a  href="{{ url_for('secrets') }}" class="btn btn-primary btn-large floating-button">Clear</a>
+      </div>
+</div>
+
+{% endif %}
+
+
+
+{% if edit == "detail" %}
+    <div class="search-item">
+  <div >
+      <form method="POST">
+        <div style="width: 99%">
+          <a class="ten-day-invoice-details" >Invoice</a>
+          <label class="ten-day-invoice-details" style="width: 47%; margin-left: 50px;">Customer Name</label>
+          <label class="ten-day-invoice-details" style="width: 12%; "> Amount </label>
+          <label class="ten-day-invoice-details" style="width: 10%; "> Status</label>
+          <label class="ten-day-invoice-details" style="width: 12%; margin-right: 40px;">Date</label>
+          <a href="{{ url_for('invoice_details', invoice_no=invoice.invoice_no) }}" class="ten-day-invoice-details" style="padding-right: 25px; padding-left: 30px;">{{ invoice.invoice_no }}</a>
+          <input class="ten-day-invoice-details" name="name" style="width: 50%; " value="{{ invoice.customer_details['customer_name'] }}">
+          <input class="ten-day-invoice-details" name="amount" style="width: 12%; " value="{{ invoice.total_amount['overall_amount'] }}">
+          <input class="ten-day-invoice-details" name="status" style="width: 11%; " value="{{ invoice.total_amount['status'] }}">
+          <label class="ten-day-invoice-details" style="width: 11%; ">{{ invoice.date }}</label>
+          <button class="btn-primary" >Save</button>
+        </div>
+      </form>
+  </div>
+</div>
+    {% endif %}
+
+</body>
+</html>
