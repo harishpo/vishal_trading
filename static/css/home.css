@@ -52,7 +52,7 @@ body {
             box-sizing: border-box; /* Include padding and border in size */
             background-color: #f2f7f8;
             border-radius: 15px;
-            height: 150px; /* Fixed height for demo */
+            height: 160px; /* Fixed height for demo */
             font-size: 15px;
         }
 
@@ -130,7 +130,7 @@ body {
     background: #f0f0f0;
     border-style: ridge;
     border-radius: 5px;
-      height: 300px; /* Fixed height */
+
       width: 1090px;
       padding: 10px;
       overflow-y: auto; /* Add vertical scroll */

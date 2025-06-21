@@ -79,15 +79,33 @@
   </div>
   <div class="box">
       <form action="{{ url_for('products') }}" method="POST">
-          <h3 style="text-align: center;">Update Products</h3>
+          <h3 style="text-align: center;">Update New Stock</h3>
           <label>Palm Oil: </label>
           <input name="new_stock" id="new_stock" placeholder=0 style="width: 100px;"><br>
           <label>Tins:</label>
           <input name="tins" id="tins" placeholder=0 style="width: 100px; margin-left: 30px;"><br>
-          <button type="submit" class="btn-large btn-primary" name="action" style="margin-left: 67px;">Add to Stock</button>
+          <button type="submit" class="btn-large btn-primary" name="action" style="margin-left: 67px;" value="add_products">Add to Stock</button>
       </form>
   </div>
+  <div class="box">
+      <form action="{{ url_for('products') }}" method="POST">
+          <h6 style="text-align: center;"><b>Update Available packed Tins</b></h6>
+          <label>15KG Tins: </label>
+          <input name="15KG" id="15KG" placeholder=0 style="width: 100px;margin-left: 10px;"><br>
+          <label>15LTR Tins: </label>
+          <input name="15LTR" id="15LTR" placeholder=0 style="width: 100px; margin-left: 6px;"><br>
+          <label>14.5KG Tins: </label>
+          <input name="14_5KG" id="14_5KG" placeholder=0 style="width: 100px;"><br>
+          <label>13KG Tins:</label>
+          <input name="13KG" id="13KG" placeholder=0 style="width: 100px; margin-left: 12px;">
+          <button type="submit" class="btn-large btn-primary" name="action" style="margin-left: 20px;" value="add_packed_tins">Update Tins</button>
+      </form>
+  </div>
+
+
 </div>
+
+
 
 
 </body>

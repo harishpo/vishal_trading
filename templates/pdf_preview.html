@@ -21,7 +21,7 @@
     }
     .image{
         margin-top: 20px;
-        width: 25%;
+        width: 250px;
         float: right;
         padding-right: 5px;
         font-family: Georgia, serif;
@@ -109,13 +109,13 @@
                 </div>
             </div>
             <div style="width: 99%;">
-                <p style="text-align: center; background-color: yellow;">Tax Invoice</p>
+                <p style="text-align: center; background-color: yellow;"><b>Tax Invoice</b></p>
             </div>
             <div class="fssi" style="width: 99%;">
-                <div class="sub-head">
-                    <label style="width: 10%;">FSSI NO: </label>
-                    <label style="width: 10%;">11223316000005</label>
-                </div>
+<!--                <div class="sub-head">-->
+<!--                    <label style="width: 10%;">FSSI NO: </label>-->
+<!--                    <label style="width: 10%;">11223316000005</label>-->
+<!--                </div>-->
                 <div class="dates" style="float: right;">
                     <label> Date: </label>
                     <label> {{date}} </label>
@@ -124,31 +124,31 @@
         </div>
         <div>
             <div style="padding-top: 30px;">
-                <label class="invoive_lbl" style="padding-right: 10px;">eWay Bill No:</label>
+                <label class="invoive_lbl" style="padding-right: 10px;"><b>E-Way Bill No:</b></label>
                 <label>{{ data['eway_bill'] }}</label>
             </div>
             <div>
-                <label style="padding-right: 25px;">Invoice No:</label>
+                <label style="padding-right: 25px;"><b>Invoice No:</b></label>
                 <label>{{ data['invoice_no'] }}</label>
             </div>
-            <div>
-                <label style="padding-right: 50px;">Ref No:</label>
-                <label>1234567890</label>
-            </div>
+<!--            <div>-->
+<!--                <label style="padding-right: 50px;">Ref No:</label>-->
+<!--                <label>1234567890</label>-->
+<!--            </div>-->
         </div>
         <div style="padding-top: 25px;">
-            <a>CUSTOMER NAME:</a>
+            <a><b>CUSTOMER NAME:</b></a>
             <label>{{ data['customer_name'] }}</label>
         </div>
         <div style="padding-top: 5px;">
-            <a>GSTIN/UIN:</a>
+            <a><b>GSTIN/UIN:</b></a>
             <label>{{ data['cust_gst'] }}</label>
         </div>
         <div style="padding-top: 40px;">
             <table style="width: 99%; margin:0 auto; height: 100px;">
                 <tr>
                     <th style="width: 5%;">S No.</th>
-                    <th style="width: 23%;">Description of Goods</th>
+                    <th style="width: 24%;">Description of Goods</th>
                     <th style="width: 9%;">Quantity</th>
                     <th style="width: 8%;">Rate</th>
                     <th style="width: 9%;">Amount</th>
@@ -171,7 +171,7 @@
             </table>
             <table style="width: 99%; margin:0 auto;">
                 <tr>
-                    <th style="width: 28%; text-align: center;">Total</th>
+                    <th style="width: 29%; text-align: center;">Total</th>
                     <th style="width: 9%;">{{ totals['total_quantity'] }}</th>
                     <th style="width: 8%;"></th>
                     <th style="width: 9%;">{{ totals['total_amount'] }}</th>
@@ -202,12 +202,12 @@
                 <p>Super Market Branch</p>
             </div>
         </div>
-        <p style="padding-top: 150px;">Declaration: We declare that this invoice shows the actual price of the goods described and that all perticulars are true and correct</p>
+        <p style="padding-top: 150px;"><b>Declaration:</b> We declare that this invoice shows the actual price of the goods described and that all perticulars are true and correct</p>
         <footer>
             <hr>
         </footer>
-        <label>Authorised Signatory</label>
-        <label style="float: right;">Customer's Signature</label>
+        <label><b>Authorised Signatory</b></label>
+        <label style="float: right;"><b>Customer's Signature</b></label>
     </div>
     <!-- Floating Anchor Button -->
 

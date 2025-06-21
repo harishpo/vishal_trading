@@ -1,15 +1,12 @@
-from crypt import methods
-
 from flask import Flask, render_template, request, url_for, redirect, flash, send_from_directory, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import func
-from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
+from flask_login import login_user, LoginManager, login_required, current_user, logout_user
 from num2words import num2words
-from datetime import datetime, timedelta
-from db import db, Invoice, User, Customer, Stock, DailyStock
+from datetime import datetime
+from db import db, Invoice, User, Customer
 from billing import GetInvoice, Customers, Report, Stocks
-
 
 
 app = Flask(__name__)
@@ -114,8 +111,9 @@ def register():
 def secrets():
     # print(current_user.name)
     daily_tins_count = Stocks.get_all_daily_stocks()
+    print(daily_tins_count)
     stock = Stocks.get_stock()
-    print(stock)
+    print(stock.other)
     search = request.args.get('search')
     response = GetInvoice.get_all_invoices()
     invoices = []
@@ -151,7 +149,12 @@ def billing():
     global customer_data
     # names = db.session.query(Customer).all()
     names = Customers.get_all_customers()
-    invoice_no = db.session.query(func.max(Invoice.invoice_no)).scalar() + 1
+    response = GetInvoice.get_all_invoices()
+    # invoice_no = 0
+    if not response:
+        invoice_no = 1
+    else:
+        invoice_no = db.session.query(func.max(Invoice.invoice_no)).scalar() + 1
     customer_data = {
         "invoice_no": invoice_no
     }
@@ -170,7 +173,6 @@ def billing():
                 cust_gst = request.form.get("gstin")
                 eway_bill_no = request.form.get("eway_bill")
                 invoice_no = request.form.get("invoice_no")
-                print(invoice_no)
                 customer_data = {
                     "customer_name": customer_name,
                     "cust_gst": cust_gst,
@@ -200,7 +202,6 @@ def billing():
                 cust_gst = request.form.get("gstin")
                 eway_bill_no = request.form.get("eway_bill")
                 invoice_no = request.form.get("invoice_no")
-                print(invoice_no)
 
                 customer_data = {
                     "customer_name": customer_name,
@@ -208,14 +209,13 @@ def billing():
                     "eway_bill": eway_bill_no,
                     "invoice_no": invoice_no
                 }
-                print(customer_data)
+
 
             return render_template('billing.html', logged_in=True, show_second_form=True, dicts=list1, date=todays_date,
                                    customer_data=customer_data, names=names)
         elif action == "add_customer":
             customer_name = request.form.get("cust_name")
             eway_bill_no = request.form.get("eway_bill")
-            print(customer_name)
             cust_gst = request.form.get("gstin")
             if cust_gst == "":
                 flash("Please enter GST Number")
@@ -318,7 +318,6 @@ def update_invoice(invoice_no):
             all_invoices.append(invoice)
     if request.method == "POST":
         response = GetInvoice.update_invoice(invoice_no, request.form.get("name"), request.form.get("amount"), request.form.get("status"))
-        print(response)
         response = db.session.execute(db.select(Invoice).where(Invoice.invoice_no == invoice_no))
         invoice = response.scalar()
         invoices_list = [invoice]
@@ -326,10 +325,8 @@ def update_invoice(invoice_no):
 
     if edit == "clear":
         response = GetInvoice.update_invoice(invoice_no, "", "", "clear")
-        print(response)
         return redirect(url_for('secrets'))
     elif edit == "detail":
-        print(edit)
         response = db.session.execute(db.select(Invoice).where(Invoice.invoice_no == invoice_no))
         invoice = response.scalar()
         return render_template("home.html", edit="detail", invoice=invoice, logged_in=True, invoices=all_invoices, stock=stock, daily_tins_count=daily_tins_count)
@@ -390,7 +387,33 @@ def report():
     search = request.form.get("search")
     month = datetime.today().date().strftime("%B")
     if search:
-        month = search.title()
+        if search == "jan":
+            month = "January"
+        elif search == "feb":
+            month = "February"
+        elif search == "mar":
+            month = "March"
+        elif search == "apr":
+            month = "April"
+        elif search == "may":
+            month = "May"
+        elif search == "june":
+            month = "June"
+        elif search == "july":
+            month = "July"
+        elif search == "aug":
+            month = "August"
+        elif search == "sep":
+            month = "September"
+        elif search == "oct":
+            month = "October"
+        elif search == "nov":
+            month = "November"
+        elif search == "dec":
+            month = "December"
+        else:
+            month = search.title()
+
     names = Customers.get_all_customers()
     if report_of == "six_month":
         missed_cust_list = []
@@ -404,7 +427,7 @@ def report():
         return render_template("report.html", logged_in=True, chart=chart_html, cust_list=cust_list, totals=totals, months=months, missed_cust_list=missed_cust_list)
 
 
-    chart_html, cust_list, totals, months, total_oil = Report.monthly_report(month)
+    chart_html, cust_list, totals, months, total_oil, monthly_invoices = Report.monthly_report(month)
     missed_cust_list = []
     for month in range(len(months)):
         cust_missed = []
@@ -412,31 +435,59 @@ def report():
             if name not in cust_list[month]:
                 cust_missed.append(name)
         missed_cust_list.append(cust_missed)
-    return render_template("report.html", logged_in=True, chart=chart_html, cust_list=cust_list, totals=totals, months=months, missed_cust_list=missed_cust_list, total_oil=total_oil)
+    return render_template("report.html", logged_in=True, chart=chart_html, cust_list=cust_list, totals=totals, months=months, missed_cust_list=missed_cust_list, total_oil=total_oil, monthly_invoices=monthly_invoices, monthly="monthly")
 
 
 
 @app.route('/products', methods=["GET", "POST"])
 @login_required
 def products():
-    # print(current_user.name)
     daily_tins_count = Stocks.get_all_daily_stocks()
     stock = Stocks.get_stock()
     if request.method == "POST":
-        if request.form.get("new_stock") != "" and request.form.get("tins") != "":
-            Stocks.update_stock(float(request.form.get("new_stock")), int(request.form.get("tins")), "add")
-            return redirect(url_for('products'))
-        elif request.form.get("new_stock") != "":
-          Stocks.update_stock(float(request.form.get("new_stock")), 0, "deduct")
-          return redirect(url_for('products'))
-        elif request.form.get("tins") != "":
-            Stocks.update_stock(0, int(request.form.get("tins")), "add")
-            return redirect(url_for('products'))
-        else:
-            print("both not available")
-            return redirect(url_for('products'))
-        # Stocks.update_stock(float(request.form.get("new_stock")), 0, "add")
+        action = request.form.get('action')
+        if action == "add_packed_tins":
+            if request.form.get("15KG") == "":
+                RP15KG = 0
+            else:
+                RP15KG = request.form.get("15KG")
+            if request.form.get("15LTR") == "":
+                RP15LTR = 0
+            else:
+                RP15LTR = request.form.get("15LTR")
+            if request.form.get("14_5KG") == "":
+                RP14_5KG = 0
+            else:
+                RP14_5KG = request.form.get("14_5KG")
+            if request.form.get("13KG") == "":
+                RP13KG = 0
+            else:
+                RP13KG = request.form.get("13KG")
+            available_tins = {
+                "15KG": RP15KG,
+                "15LTR": RP15LTR,
+                "14_5KG": RP14_5KG,
+                "13KG": RP13KG
+            }
+            Stocks.update_available_tins(available_tins, "add")
+            return redirect(url_for("secrets"))
 
+        else:
+            if request.form.get("new_stock") == "0" and request.form.get("tins") == "0":
+                Stocks.update_stock(float(request.form.get("new_stock")), int(request.form.get("tins")), "clear")
+                return redirect(url_for('products'))
+            elif request.form.get("new_stock") != "" and request.form.get("tins") != "":
+                Stocks.update_stock(float(request.form.get("new_stock")), int(request.form.get("tins")), "add")
+                return redirect(url_for('products'))
+            elif request.form.get("new_stock") != "":
+                Stocks.update_stock(float(request.form.get("new_stock")), 0, "add")
+                return redirect(url_for('products'))
+            elif request.form.get("tins") != "":
+                Stocks.update_stock(0, int(request.form.get("tins")), "add")
+                return redirect(url_for('products'))
+            else:
+                print("both not available")
+                return redirect(url_for('products'))
 
     return render_template("products.html", name=current_user.name, logged_in=True, stock=stock, daily_tins_count=daily_tins_count)
 

@@ -52,18 +52,22 @@
         <button type="submit" class="btn btn-primary btn-block btn-large" name="search" value="search"
              style="width: 100px;  float: right; " >Search</button>
       </form>
-      <a href="{{ url_for('report', reports='one_month') }}"  style="width: 120px; margin-top: 5px;" onclick="document.getElementById('postForm').submit();">Monthly Report</a>
-      <a href="{{ url_for('report', reports='six_month') }}"  style="width: 120px; margin-top: 5px; margin-left: 20px;" onclick="document.getElementById('postForm').submit();">Six Month Report</a>
+<!--      <a href="{{ url_for('report', reports='one_month') }}"  style="width: 120px; margin-top: 5px;" onclick="document.getElementById('postForm').submit();">Monthly Report</a>-->
+      <a href="{{ url_for('report', reports='six_month') }}"  style="width: 120px; margin-top: 5px; color: black;" onclick="document.getElementById('postForm').submit();">Six Month Report</a>
     </div>
 
     <div  class="chart">
         {{ chart|safe }}
     </div>
     {% for month in range(months|length): %}
-    <div class="report-display">
+    <div class="report-display" style="height: 400px">
         <h4 style="text-align: center; ">{{ months[month] }} Month Sales Report</h4>
         <hr>
+        {% if monthly == "monthly": %}
         <label>Total Sales:  {{ totals[month] }}/- Rupees || Oil Sold: {{total_oil}}KG ~</label>
+        {% else: %}
+        <label>Total Sales:  {{ totals[month] }}/- Rupees</label>
+        {% endif %}
         <hr>
         <div class="purchased_cust_list" style="width: 600px">
             <label>Customers List Who made a business </label>
@@ -81,18 +85,19 @@
                 {% endfor %}
             </ol>
         </div>
+        <hr>
+        {% if monthly == "monthly": %}
+        <div>
+            <label>Invoice Details</label><br>
+            {% for invoice in monthly_invoices: %}
+            <a href="{{ url_for('invoice_details', invoice_no=invoice.invoice_no) }}">{{ invoice.invoice_no }}</a>
+            <span class="badge bg-danger-subtle ">{{ invoice.total_amount['status'] }}</span>
+            <label>{{ invoice.total_amount['overall_amount'] }}</label><br>
+            {% endfor %}
+        </div>
+        {% endif %}
     </div>
     {% endfor %}
-
-
-
-
-
-
-
-
-
-
 
 
 
