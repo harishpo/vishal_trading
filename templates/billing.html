@@ -2,16 +2,15 @@
 {% block content %}
 
 
+
+
+
+
 <div class="form-container">
   <form action="{{ url_for('billing') }}" method="post">
     <div class="labels-div">
-      <label for="select">Select Tin:</label><br><br>
-      <label for="quantity">Quantity:</label><br><br>
-      <label for="price">Price:</label><br><br>
-    </div>
-
-    <div class="inputs-div">
-      <select id="select" name="tins" style="width: 100%; height: 38px;">
+      <label for="select">Select Tin:</label>
+      <select id="select" name="tins" style="width: 70%; height: 30px; border-radius: 5px;">
         <option value="RICH PALM GOLD 15 KG TIN">RICH PALM GOLD 15 KG TIN</option>
         <option value="RICH PALM GOLD 14.5 KG TIN">RICH PALM GOLD 14.5 KG TIN</option>
         <option value="RICH PALM GOLD 15 LTR TIN">RICH PALM GOLD 15 LTR TIN</option>
@@ -19,31 +18,32 @@
         <option value="HEALTHY GOLD 15 KG TIN">HEALTHY GOLD 15 KG TIN</option>
         <option value="HEALTHY GOLD 15 LTR TIN">HEALTHY GOLD 15 LTR TIN</option>
       </select>
-<!--      <input type="text" name="tin" id="tin" style="width: 18%;">-->
-      <input type="number" name="quantity" id="quantity" >
-      <input type="number" name="price" id="price" ><br>
-<!--      <input type="number" name="total" id="total" >-->
+      <label for="quantity">Quantity:</label>
+      <input type="number" name="quantity" id="quantity" style="width: 70%; height: 30px; margin-left: 11px; border-radius: 5px;" >
+      <label for="price">Price:</label>
+      <input type="number" name="price" id="price" style="width: 70%; height: 30px; margin-left: 35px; border-radius: 5px;">
+
       <button type="submit" class="btn btn-primary btn-block btn-large" name="action" value="add_goods"
-              style="width: 40%; float: right;">Add</button>
+              style="width: 30%; margin-left: 61%;">Add</button>
     </div>
       <div class="gst-labels-div">
-        <label  style="padding-right: 10px; padding-left: 40px;">Customer Name:</label>
-        <input type="text" name="cust_name" value="{{ customer_data['customer_name'] }}" id="cust_name" style="width: 35%;">
-        <select id="customer" name="customer_name" >
+        <label  style="padding-right: 10px; ">Customer Name:</label>
+        <input type="text" name="cust_name" value="{{ customer_data['customer_name'] }}" id="cust_name" style="width: 35%; height: 30px; border-radius: 5px;">
+        <select id="customer" name="customer_name" style="height: 30px; border-radius: 5px;">
           <option value="">Select Customer Name</option>
           {% for name in names: %}
           <option value="{{ name }}">{{ name }}</option>
           {% endfor %}
         </select>
-        <label >Invoice No:</label>
-        <input type="text" name="invoice_no" id="invoice_no" value="{{ customer_data['invoice_no'] }}" style="width: 40px; float: right;">
-        <label style="padding-right: 52px; padding-left: 40px; text-align: right;">GSTIN/UIN:</label>
-        <input type="text" id="gst" name="gstin" value="{{ customer_data['cust_gst'] }}" style="width: 305px">
+        <label style="margin-left: 10px; ">Invoice No:</label>
+        <input type="text" name="invoice_no" id="invoice_no" value="{{ customer_data['invoice_no'] }}" style="width: 60px; float: right; text-align: center; border-radius: 5px;">
+        <label style="padding-right: 45px; text-align: right;">GSTIN/UIN:</label>
+        <input type="text" id="gst" name="gstin" value="{{ customer_data['cust_gst'] }}" style="width: 35%; height: 30px; border-radius: 5px;">
         <button type="submit" class="btn btn-primary btn-block btn-large" name="action" value="add_customer"
-              style="width: 18%; float: right; margin-right: 220px">New Customer</button>
+              style="width: 18%; float: right; margin-right: 220px; height: 40px;">New Customer</button><br>
 
-        <label style="padding-right: 45px; padding-left: 40px; text-align: right;">EwayBill No:</label>
-        <input type="text" name="eway_bill" value="{{ customer_data['eway_bill'] }}" style="width: 305px">
+        <label style="padding-right: 41px; text-align: right;">EwayBill No:</label>
+        <input type="text" name="eway_bill" value="{{ customer_data['eway_bill'] }}" style="width: 35%; border-radius: 5px;">
       </div>
 
       {% with messages = get_flashed_messages() %}

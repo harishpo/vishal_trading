@@ -212,9 +212,9 @@ class Report:
                 )
             ],
             layout=go.Layout(
-                title=f"Total No Of Tins in month of {month}: {total_tins}",
+                title=f"Total No Of Tins in  {month}: {total_tins}",
                 yaxis=dict(title="TIN's in quantity"),
-                height=500,
+                height=400,
             )
         )
         # Render chart as HTML
@@ -284,7 +284,7 @@ class Report:
             layout=go.Layout(
                 title=f"Sale report of last six months",
                 yaxis=dict(title="sales in Rupees"),
-                height=500,
+                height=400,
             )
         )
         # Render chart as HTML

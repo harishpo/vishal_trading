@@ -122,7 +122,7 @@ def secrets():
             invoices.append(invoice)
 
 
-    return render_template("home.html", name=current_user.name, logged_in=True, invoices=invoices, search=search, stock=stock, daily_tins_count=daily_tins_count)
+    return render_template("home.html", name=current_user.name, logged_in=True, invoices=invoices, search=search, stock=stock, daily_tins_count=daily_tins_count, card="pending")
 
 
 @app.route('/logout')
@@ -132,12 +132,6 @@ def logout():
     return redirect(url_for('home'))
 
 
-@app.route('/download')
-@login_required
-def download():
-
-    # return send_from_directory('/static/files/', 'cheat_sheet.pdf')
-    return send_from_directory('static', path="files/cheat_sheet.pdf")
 
 result = ""
 list1 = []
@@ -320,8 +314,9 @@ def update_invoice(invoice_no):
         response = GetInvoice.update_invoice(invoice_no, request.form.get("name"), request.form.get("amount"), request.form.get("status"))
         response = db.session.execute(db.select(Invoice).where(Invoice.invoice_no == invoice_no))
         invoice = response.scalar()
+        total = invoice.total_amount['overall_amount']
         invoices_list = [invoice]
-        return render_template("home.html", name=current_user.name, logged_in=True, invoices=all_invoices, search="yes", invoices_list=invoices_list, stock=stock, daily_tins_count=daily_tins_count)
+        return render_template("home.html", name=current_user.name, logged_in=True, invoices=all_invoices, search="yes", invoices_list=invoices_list, stock=stock, daily_tins_count=daily_tins_count, total=total)
 
     if edit == "clear":
         response = GetInvoice.update_invoice(invoice_no, "", "", "clear")
@@ -351,7 +346,9 @@ def search():
             num = int(item)
             inv_detail = GetInvoice.get_invoice_details(num)
             invoices.append(inv_detail)
-            return invoices
+            total = inv_detail.total_amount['overall_amount']
+            print(total)
+            return invoices, total
         except ValueError:
             pass  # Not a number
         # Check if it's a date in the format DD/MM/YYYY
@@ -359,23 +356,31 @@ def search():
             date_obj = datetime.strptime(item, "%d/%m/%Y")
             # response = GetInvoice.get_all_invoices()
             # invoices = []
+            total = 0
             for invoice in response:
                 if invoice.date == date_obj.date():
+                    total = total + int(invoice.total_amount['overall_amount'])
                     invoices.append(invoice)
-            return invoices
+            return invoices, total
         except ValueError:
             pass  # Not a date in the given format
         # If not a number or a date, it's treated as a string
         # response = GetInvoice.get_all_invoices()
         # invoices = []
+        total = 0
         for invoice in response:
+
             if invoice.customer_details['customer_name'] == item:
                 invoices.append(invoice)
-        return invoices
+                total = total + int(invoice.total_amount['overall_amount'])
+                print(total)
+        return invoices, total
 
 
-    invoices_list = check_input(user_input, response)
-    return render_template("home.html", name=current_user.name, logged_in=True, invoices=all_invoices, search="yes", invoices_list=invoices_list, stock=stock, daily_tins_count=daily_tins_count)
+    invoices_list, total = check_input(user_input, response)
+    print(total)
+    print(invoices_list)
+    return render_template("home.html", name=current_user.name, logged_in=True, invoices=all_invoices, search="yes", invoices_list=invoices_list, stock=stock, daily_tins_count=daily_tins_count, total=total)
 
 
 
@@ -435,6 +440,7 @@ def report():
             if name not in cust_list[month]:
                 cust_missed.append(name)
         missed_cust_list.append(cust_missed)
+
     return render_template("report.html", logged_in=True, chart=chart_html, cust_list=cust_list, totals=totals, months=months, missed_cust_list=missed_cust_list, total_oil=total_oil, monthly_invoices=monthly_invoices, monthly="monthly")
 
 

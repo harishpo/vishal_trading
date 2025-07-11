@@ -1,73 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vishal Trading</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/home.css')}}"
-    />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
-    <!--Side Bar code-->
-      <div class="sidebar d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px;">
-<!--        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">-->
-<!--&lt;!&ndash;          <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>&ndash;&gt;-->
-<!--            <svg class="bi me-2" width="20" height="40" role="img" ><img class="mb-1"-->
-<!--                    src="/static/images/vishal_taders.png" alt="" width="50" height="35"></svg>-->
-<!--          <span class="fs-4">Vishal Traders</span>-->
-<!--        </a>-->
-          <label style="color: red; margin-left: 30px; font-family: Georgia, serif; font-size: large;">Vishal Trading Company</label>
-        <ul class="nav nav-pills flex-column mb-auto">
-          <li class="nav-item">
-            <a href="{{ url_for('secrets') }}" class="nav-link active" aria-current="page">
+{% extends "base.html" %}
+{% block content %}
 
-              <svg class="bi pe-none me-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/>
-              </svg>
-              Home
-            </a>
-          </li>
-          <li>
-            <a href="{{ url_for('billing') }}" class="nav-link text-white">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-              New Invoice
-            </a>
-          </li>
-          <li>
-            <a href="{{ url_for('report') }}" class="nav-link text-white">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-              Report
-            </a>
-          </li>
-          <li>
-            <a href="{{ url_for('products') }}" class="nav-link text-white">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-              Products
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link text-white">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-              Customers
-            </a>
-          </li>
-        </ul>
-        <hr>
-        <a href="{{ url_for('logout') }}" class="nav-link text-white">
-              <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-              Log Out
-            </a>
-      </div>
-<!--Sidebar code ends-->
 
 <div class="search-box">
   <form action="{{ url_for('search') }}" method="POST">
@@ -120,6 +53,7 @@
 
 
 <!-- Pending invoice card -->
+{% if card == "pending" %}
 <div class="card mb-6 mb-xxl-0">
   <div class="card-header">
     <div class="row align-items-center">
@@ -172,13 +106,16 @@
     </table>
   </div>
 </div>
-
+{% endif %}
 <!-- Pending invoice card end -->
 
 
 
 
 
+
+
+<!-- search card  -->
 {% if search == "yes" %}
 <div class="card mb-6 mb-xxl-0">
   <div class="card-header">
@@ -233,11 +170,19 @@
   </div>
     <div >
         <a  href="{{ url_for('secrets') }}" class="btn btn-primary btn-large floating-button">Clear</a>
+        <label style="margin-left: 56%;"><b>Total  :  </b> {{total}}</label>
       </div>
 </div>
 
 {% endif %}
 
+<!-- side card-->
+<!--{% if search == "yes" %}-->
+<!--<div class="side_card">-->
+<!--  <label>Total Amount</label>-->
+<!--</div>-->
+<!--{% endif %}-->
+<!-- side card end -->
 
 
 {% if edit == "detail" %}
@@ -262,5 +207,4 @@
 </div>
     {% endif %}
 
-</body>
-</html>
+{% endblock %}
