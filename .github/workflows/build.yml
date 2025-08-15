@@ -25,4 +25,5 @@ jobs:
         with:
           context: .
           push: true
+          platforms: linux/amd64,linux/arm64
           tags: harishh98/vishaltraders:latest
